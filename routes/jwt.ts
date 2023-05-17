@@ -23,7 +23,7 @@ export function verify(req: Request) {
   }
   token = token.split(' ').at(-1)!;
   try {
-    return jsonwebtoken.verify(token, secrect)
+    return jsonwebtoken.verify(token, secrect) as Record<string, string | number>
   } catch (error) {
     return null
   }

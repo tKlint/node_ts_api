@@ -9,8 +9,10 @@
 import express from 'express'
 import path from 'path'
 import errMiddleware from './errMiddleware'
+
 import 'express-async-errors'
 import admin from './apis/admin'
+import tokenMiddleware from './tokenMiddleware'
 const app = express()
 
 const port = 80
@@ -19,6 +21,8 @@ const staticPath = path.resolve(__dirname, '../public')
  * 静态资源
  */
 app.use(express.static(staticPath))
+
+app.use(tokenMiddleware)
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
