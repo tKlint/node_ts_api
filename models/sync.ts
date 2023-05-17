@@ -10,5 +10,5 @@ import "./admin";
 import sequelize from "./db";
 
 sequelize.sync({ alter: true }).then(() => {
-    console.log('模型同步完成')
+  console.log('模型同步完成')
 })
