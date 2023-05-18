@@ -15,23 +15,45 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>welcomme</h1>
-    <button id="loginBtn">login</button>
+    <img src="/upload/img-1684380352239" alt="">
+    <input type="file">
+    <button id="upload">上传</button>
+    <!-- <button id="down">下载</button> -->
+    <a resrole="thunder" href="/api/download/168438051865.png"> 下载</a>
     <script>
-        
-        loginBtn.addEventListener('click', () => {
-            fetch('/api/admin/login', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                loginId: 'root',
-                loginPwd: 'root'
-            })
-        })
-        })
+        const file = document.querySelector('input')
+        const btn = document.querySelector('#upload')
+        const img = document.querySelector('img')
+        // const btn2 = document.querySelector('#down')
+
+
+
+        // 迅雷下载
+        // const a = document.querySelector("a[resrole=thunder]");
+        // let thunderLink = `AA${a.href}ZZ`;
+        // thunderLink = btoa(thunderLink);
+        // thunderLink = "thunder://" + thunderLink;
+        // a.href = thunderLink;
        
+
+        btn.onclick = () => {
+            // if (file)\
+            if (file.files.length === 0) {
+                alert('文件未上传')
+            } else {
+                const f = Array.from(file.files)[0]
+                const formData = new FormData()
+                formData.append('img', f)
+                fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                }).then((data) => {
+                    console.log(data, 'data')
+                })
+            }
+            
+        }
+        console.dir(file)
     </script>
 </body>
 </html>

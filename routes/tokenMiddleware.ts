@@ -8,6 +8,14 @@ const nonTokenApis = [
   {
     method: 'POST',
     path: '/api/admin/login'
+  },
+  {
+    method: 'POST',
+    path: '/api/upload'
+  },
+  {
+    method: 'GET',
+    path: '/api/download/:filename'
   }
 ]
 const handleNonToken: RequestHandler = (req, res, next) => {

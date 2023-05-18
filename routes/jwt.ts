@@ -17,7 +17,7 @@ export function publish(res: Response, maxAge = 3600 * 24, info = {}) {
 }
 
 export function verify(req: Request) {
-  let token: string = req.cookies[cookieKey] || req.headers['authorization'];
+  let token: string = req.cookies?.[cookieKey] || req.headers['authorization'];
   if (!token) {
     return null;
   }

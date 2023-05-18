@@ -9,14 +9,20 @@
 import express from 'express'
 import path from 'path'
 import errMiddleware from './errMiddleware'
-
+import history from 'connect-history-api-fallback'
 import 'express-async-errors'
 import admin from './apis/admin'
+import upload from './apis/upload'
+
 import tokenMiddleware from './tokenMiddleware'
+import download from './apis/download'
 const app = express()
 
 const port = 80
 const staticPath = path.resolve(__dirname, '../public')
+
+app.use(history());
+
 /**
  * 静态资源
  */
@@ -28,6 +34,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.use('/api/admin', admin)
+app.use('/api/upload', upload)
+app.use('/api/download', download)
 
 
 /**
