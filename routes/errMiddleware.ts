@@ -5,7 +5,7 @@ import { defaultLogger } from '../logger';
 const errMiddleware: ErrorRequestHandler<any> = (err, req, res, next) => {
   if (err) {
     const message = err instanceof Error ? err.message : err;
-    defaultLogger.error(message)
+    defaultLogger.error(err)
     res.status(500).send(getErr(message))
     return
   }

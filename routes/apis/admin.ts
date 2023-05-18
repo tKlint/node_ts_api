@@ -15,4 +15,10 @@ route.post('/login',  async (req, resp) => {
   resp.send(result)
 })
 
+route.get('/user', (req, resq) => {
+  resq.send([
+    { id: 1 }
+  ])
+})
+
 export default route

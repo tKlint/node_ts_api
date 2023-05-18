@@ -15,11 +15,11 @@
     <title>Document</title>
 </head>
 <body>
-    <img src="/upload/img-1684380352239" alt="">
+    <!-- <img src="/upload/img-1684380352239" alt=""> -->
     <input type="file">
     <button id="upload">上传</button>
     <!-- <button id="down">下载</button> -->
-    <a resrole="thunder" href="/api/download/168438051865.png"> 下载</a>
+    <!-- <a resrole="thunder" href="http://127.0.0.1:80/api/download/168438051865.png"> 下载</a> -->
     <script>
         const file = document.querySelector('input')
         const btn = document.querySelector('#upload')
@@ -38,19 +38,16 @@
 
         btn.onclick = () => {
             // if (file)\
-            if (file.files.length === 0) {
-                alert('文件未上传')
-            } else {
+          
                 const f = Array.from(file.files)[0]
                 const formData = new FormData()
                 formData.append('img', f)
-                fetch('/api/upload', {
-                    method: 'POST',
-                    body: formData
+                fetch('http://127.0.0.1:80/api/admin/login', {
+                    method: 'get',
+                    // body: formData
                 }).then((data) => {
                     console.log(data, 'data')
                 })
-            }
             
         }
         console.dir(file)

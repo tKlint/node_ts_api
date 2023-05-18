@@ -8,6 +8,7 @@
  */
 import express from 'express'
 import path from 'path'
+import cors from 'cors'
 import errMiddleware from './errMiddleware'
 import history from 'connect-history-api-fallback'
 import 'express-async-errors'
@@ -21,15 +22,45 @@ const app = express()
 const port = 80
 const staticPath = path.resolve(__dirname, '../public')
 
-app.use(history());
-
 /**
  * 静态资源
  */
 app.use(express.static(staticPath))
 
+/**
+ * 跨域访问白名单
+ */
+const originWhitelist = ['http://127.0.0.1:80', 'http://127.0.0.1:5500']
+
+/**
+ * 允许访问源
+ */
+app.use(cors({
+  credentials: true,
+  origin(requestOrigin, callback) {
+    if (!requestOrigin) {
+      callback(null, '*')
+      return
+    }
+    console.log(requestOrigin, 'requestOrigin');
+    if(originWhitelist.includes(requestOrigin)) {
+      callback(null, requestOrigin)
+      return
+    }
+    callback(new Error(`CORS ERROR! origin: ${requestOrigin} not allowed!`))
+  },
+}))
+
+/**
+ * 令牌校验中间件
+ */
 app.use(tokenMiddleware)
 
+/**
+ * 请求体解析
+ * @description x-www-form-urlencoded
+ * @description application/json
+ */
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
@@ -37,6 +68,11 @@ app.use('/api/admin', admin)
 app.use('/api/upload', upload)
 app.use('/api/download', download)
 
+/**
+ * 接口降级处理
+ * @description 支持前端history路由
+ */
+app.use(history());
 
 /**
  * 错误捕获
@@ -44,5 +80,5 @@ app.use('/api/download', download)
 app.use(errMiddleware)
 
 app.listen(port, () => {
-    console.log(`server start at ${port}`)
+  console.log(`server start at ${port}`)
 })

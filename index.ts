@@ -8,5 +8,3 @@
  */
 
 import './init'
-
-console.log('ok')
