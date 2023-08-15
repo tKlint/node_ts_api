@@ -9,6 +9,9 @@
 import md5 from 'md5'
 import Admin from '../models/admin';
 import { Model } from 'sequelize/types'
+import Role, { RoleType } from '../models/role';
+import Permission from '../models/permission';
+import Routes from '../models/routes';
 import { AdminServiceType } from './type';
 
 export async function addAdmin(params: AdminServiceType.AddAdminParams) {
@@ -16,7 +19,18 @@ export async function addAdmin(params: AdminServiceType.AddAdminParams) {
   const ins = await Admin.create(params);
   return ins.toJSON();
 }
-
+export async function isUserExisted(loginId: string) {
+  const result = await Admin.findOne({
+    where: {
+      loginId
+    },
+    attributes: ['id']
+  });
+  if (result) {
+    return true;
+  }
+  return false;
+}
 export async function login(loginId: string, loginPwd: string) {
   loginPwd = md5(loginPwd)
   const result = await Admin.findOne<Model<AdminServiceType.AddAdminParams>>({
@@ -24,16 +38,63 @@ export async function login(loginId: string, loginPwd: string) {
       loginId,
       loginPwd
     },
-    attributes: ['loginId', 'id']
+    attributes: ['loginId', 'id', 'email']
   })
   if (result) {
-    console.log(result, 'ser')
     return result?.toJSON()
   }
   return null;
-} 
+}
+
+export async function getAdmins () {
+  const result = await Admin.findAll();
+  return JSON.parse(JSON.stringify(result));
+};
+
+
+async function getAdminById (id: number) {
+  const result = await Admin.findByPk(id);
+  if (result) {
+    return result.toJSON();
+  }
+  return null;
+};
+
+async function whoamiByIdLoginId(loginId: string){
+  try {
+    // 查找用户信息
+    const user = await Admin.findOne({
+      where: { loginId },
+      include: [
+        {
+          model: Role,
+          through: { attributes: [] }, // 不返回关联关系中的属性
+          include: [
+            {
+              model: Permission,
+            },
+            {
+              model: Routes,
+            },
+          ],
+        },
+      ],
+    });
+    if (!user) {
+      return null;
+    }
+    return user;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    return null;
+  }
+}
 
 export default {
   login,
-  addAdmin
+  addAdmin,
+  isUserExisted,
+  getAdmins,
+  getAdminById,
+  whoamiByIdLoginId
 }

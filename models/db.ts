@@ -8,7 +8,7 @@
  */
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize('my_local_data', 'root', '123456', {
+const sequelize = new Sequelize('my_local_data', 'root', 'rootgege', {
   host: 'localhost',
   dialect: 'mysql'
 })

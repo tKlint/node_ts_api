@@ -14,7 +14,9 @@ interface Params {
 export declare namespace AdminServiceType {
   interface AddAdminParams extends Params {
     loginId: string;
+    email: string;
     loginPwd: string;
-    sex: number;
+    sex?: number;
   }
 }
+

@@ -10,6 +10,10 @@ const nonTokenApis = [
     path: '/api/admin/login'
   },
   {
+    method: 'PUT',
+    path: '/api/admin/signup'
+  },
+  {
     method: 'POST',
     path: '/api/upload'
   },

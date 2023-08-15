@@ -17,6 +17,7 @@ import upload from './apis/upload'
 
 import tokenMiddleware from './tokenMiddleware'
 import download from './apis/download'
+import { getErr } from './getSendResult'
 const app = express()
 
 const port = 80
@@ -30,7 +31,7 @@ app.use(express.static(staticPath))
 /**
  * 跨域访问白名单
  */
-const originWhitelist = ['http://127.0.0.1:80', 'http://127.0.0.1:5500']
+const originWhitelist = ['http://localhost:3000', 'http://127.0.0.1:5500']
 
 /**
  * 允许访问源
@@ -42,7 +43,6 @@ app.use(cors({
       callback(null, '*')
       return
     }
-    console.log(requestOrigin, 'requestOrigin');
     if(originWhitelist.includes(requestOrigin)) {
       callback(null, requestOrigin)
       return
@@ -78,6 +78,10 @@ app.use(history());
  * 错误捕获
  */
 app.use(errMiddleware)
+
+app.use(function(req, res, next) {
+  res.status(404).send(getErr(`Sorry, the requested ${req.originalUrl} page not found.`));
+});
 
 app.listen(port, () => {
   console.log(`server start at ${port}`)

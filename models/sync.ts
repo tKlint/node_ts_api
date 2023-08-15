@@ -7,8 +7,18 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import "./admin";
+import "./routes";
+import "./role";
+import "./permission";
+import "./userRole";
+import "./rolePermission"
+import "./RoleRoutes"
+
 import sequelize from "./db";
 
-sequelize.sync({ alter: true }).then(() => {
-  console.log('模型同步完成')
-})
+if (false){
+  sequelize.sync({ alter: true }).then(() => {
+    console.log('模型同步完成')
+  })
+}
+

@@ -13,8 +13,6 @@ const storage = multer.diskStorage({
     const ramdomStr = Math.random().toString(36).slice(-6);
     const ext = path.extname(file.originalname);
     const filename = `${timeStamp}-${ramdomStr}${ext}`;
-    console.log(filename, 'filename')
-
     cb(null, filename);
   }
 })
